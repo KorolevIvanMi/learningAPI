@@ -36,12 +36,7 @@ async def update_product(
     await session.commit()
     return product
 
-# частичное обновление отдельной функцией
-# async def update_product_partial(session: AsyncSession, product: Product,  product_update_partial: ProductUpdatePartial):
-#     for name, value in product_update_partial.model_dump(exclude_unset=True).items():
-#         setattr(product, name, value)
-#     await session.commit()
-#     return product 
+
 
 async def delete_product(
     session:AsyncSession,
