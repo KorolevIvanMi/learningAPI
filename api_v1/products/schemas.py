@@ -27,7 +27,7 @@ def get_utc_now() -> datetime:
 class ProductBase(BaseModel):
     name: str
     description: str
-    price: float  # ← Изменил int на float (цена обычно дробная)
+    price: float  
 
 # Для создания
 class ProductCreate(ProductBase):

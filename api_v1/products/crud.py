@@ -1,6 +1,3 @@
-
-
-
 from typing import List, Optional, Dict
 from bson import ObjectId
 from datetime import datetime, timezone
@@ -31,10 +28,7 @@ class ProductCRUD:
 
 
     async def get(self, product_id: str) -> Optional[Dict]:
-        """
-        ПОЛУЧЕНИЕ продукта по ID
-        SELECT ... WHERE id = ? → find_one({"_id": ObjectId(id)})
-        """
+        
         # Проверяем, что это валидный ObjectId
         if not ObjectId.is_valid(product_id):
             return None

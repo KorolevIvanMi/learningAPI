@@ -4,7 +4,7 @@ from typing import List
 from .crud import ProductCRUD, get_product_crud
 
 from .schemas import Product, ProductCreate, ProductUpdate, ProductUpdatePartial
-
+from .dependencies import get_product_by_id
 
 router = APIRouter(tags=["Products"])
 
@@ -20,7 +20,7 @@ async def get_products(
 
 @router.post("/", response_model=ProductCreate, status_code= status.HTTP_201_CREATED,)
 async def create_product( 
-    product_in: ProductCreate, 
+    product_in: ProductCreate = Depends(get_product_by_id), 
     product_crud: ProductCRUD = Depends(get_product_crud),
     ):
     return await product_crud.create_product(product_in=product_in)
@@ -38,7 +38,8 @@ async def get_product(
 
 @router.put("/{product_id}/")
 async def update_product(
-    product_id: str, product_update: ProductUpdate, 
+    product_id: str, 
+    product_update: ProductUpdate, 
     product_crud: ProductCRUD = Depends(get_product_crud),
 ):
     product = await product_crud.update(product_id, product_update)
@@ -46,18 +47,6 @@ async def update_product(
         raise HTTPException(status_code=404, detail="Product not found")
     return product
 
-# @router.patch("/{product_id}/")
-# async def update_product_partial(
-#     product_update: ProductUpdatePartial,
-#     product = Depends(get_product_by_id),
-#     session:AsyncSession = Depends(db_helper.session_dependency),
-# ):
-#     return await crud.update_product(
-#         session=session,
-#         product=product, 
-#         product_update= product_update,
-#         partial=True
-#         )
 
 @router.delete("/{product_id}")
 async def delete_product(
