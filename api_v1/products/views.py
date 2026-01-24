@@ -20,7 +20,7 @@ async def get_products(
 
 @router.post("/", response_model=ProductCreate, status_code= status.HTTP_201_CREATED,)
 async def create_product( 
-    product_in: ProductCreate = Depends(get_product_by_id), 
+    product_in: ProductCreate , 
     product_crud: ProductCRUD = Depends(get_product_crud),
     ):
     return await product_crud.create_product(product_in=product_in)
