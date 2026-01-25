@@ -10,10 +10,10 @@ class MongoDB:
     @classmethod
     async def connect(cls):
         try:
-            cls.client  = AsyncIOMotorClient(settings.MONGODB_URL)
+            cls.client  = AsyncIOMotorClient(settings.mongodb_url)
             await cls.client.admin.command('ping')
 
-            cls.database = cls.client[settings.MONGODB_DATABASE]
+            cls.database = cls.client[settings.mongo_database]
 
             print("MongoDB подключен")
 

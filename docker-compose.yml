@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb_container
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: products_db
+    volumes:
+      - mongodb_data:/data/db
+      - ./init_mongo.js:/docker-entrypoint-initdb.d/init_mongo.js:ro
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+    command: ["mongod", "--auth", "--bind_ip_all"]
+
+    
+  fastapi-app:
+    build: .
+    container_name: fastapi_container
+    restart: always
+    depends_on:
+      - mongodb
+    env_file:
+      - .env  # Загружаем переменные из .env
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+
+volumes:
+  mongodb_data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

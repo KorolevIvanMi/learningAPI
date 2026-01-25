@@ -1,36 +1,35 @@
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from core.models.mongo_db.database import mongodb
-from api_v1.products.views import router as products_router
 from core.config import settings
-import uvicorn
-
 from api_v1 import router as router_v1
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    # Запуск - подключаемся к MongoDB
     await mongodb.connect()
-
-    yield
-
+    
+    yield  # Приложение работает
+    
+    # Остановка - отключаемся от MongoDB
     await mongodb.disconnect()
 
-
-
-
-
+# Создаем приложение
 app = FastAPI(lifespan=lifespan)
-app.include_router(router= router_v1, prefix=settings.api_v1_prefix)
 
+# Подключаем роутер API
+app.include_router(router=router_v1, prefix=settings.api_v1_prefix)
+
+# Простой endpoint для проверки
 @app.get("/")
 def hello_index():
-    return {
-        "message": "Hello index!",
-    }
+    return {"message": "FastAPI with MongoDB is running"}
 
-
-
-
-if __name__ == '__main__':
-
-    uvicorn.run("main:app", reload=True)
+@app.get("/health")
+async def health_check():
+    try:
+        # Проверяем что MongoDB доступна
+        await mongodb.client.admin.command('ping')
+        return {"status": "healthy", "database": "connected"}
+    except Exception:
+        return {"status": "unhealthy", "database": "disconnected"}
