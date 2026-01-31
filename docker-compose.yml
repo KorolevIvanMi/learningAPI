@@ -18,7 +18,7 @@ services:
       - app-network
     command: ["mongod", "--auth", "--bind_ip_all"]
 
-    
+
   fastapi-app:
     build: .
     container_name: fastapi_container
