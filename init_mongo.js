@@ -10,6 +10,7 @@ db.createUser({
     ]
 });
 
+
 // Создаем коллекцию products если ее нет
 if (!db.getCollectionNames().includes("products")) {
     db.createCollection("products");
