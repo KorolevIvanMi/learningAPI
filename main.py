@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from core.models.mongo_db.database import mongodb
 from core.config import settings
 from api_v1 import router as router_v1
+import uvicorn
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -33,3 +34,8 @@ async def health_check():
         return {"status": "healthy", "database": "connected"}
     except Exception:
         return {"status": "unhealthy", "database": "disconnected"}
+    
+uvicorn.run(
+        "main:app",
+        host="127.0.0.1",  # или "0.0.0.0" для доступа из сети
+        port=8000)
