@@ -24,7 +24,7 @@ app.include_router(router=router_v1, prefix=settings.api_v1_prefix)
 # Простой endpoint для проверки
 @app.get("/")
 def hello_index():
-    return {"message": "FastAPI with MongoDB is running!!!!!"}
+    return {"message": "FastAPI with MongoDB is running!"}
 
 @app.get("/health")
 async def health_check():
