@@ -1,7 +1,7 @@
 // Создаем базу данных и настраиваем пользователей
 db = db.getSiblingDB('products_db');
 
-// Создаем пользователя для базы данных products_db
+// Создаем пользователя для базы данных products_db kkdjfvjdbfvjdfbvdfojvb  
 db.createUser({
     user: "app_user",
     pwd: "123",
